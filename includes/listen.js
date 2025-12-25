@@ -1,11 +1,10 @@
-const autoReply = require("./handlers/autoReply");
-
-module.exports = (api) => {
+module.exports = function (api) {
   api.listenMqtt((err, event) => {
-    if (err) return;
-
-    if (event.type === "message" && event.body) {
-      autoReply(api, event);
+    if (err) {
+      console.error("Listen error:", err);
+      return;
     }
+
+    require("./handlers/autoReply")(api, event);
   });
 };
