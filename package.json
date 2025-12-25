@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "facebook-chat-api": "^1.7.6"
+    "facebook-chat-api": "^1.8.0"
   }
 }
