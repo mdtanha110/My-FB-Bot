@@ -1,40 +1,34 @@
 const fs = require("fs");
 const path = require("path");
+const login = require("facebook-chat-api");
 
-// NEW facebook api
-const login = require("@whiskeysockets/facebook-chat-api");
-
-// যদি Render env এ appstate দেওয়া থাকে
+// ENV থেকে appstate লিখে নেওয়া
 if (process.env.FB_APPSTATE) {
-  try {
-    fs.writeFileSync(
-      path.join(__dirname, "appstate.json"),
-      process.env.FB_APPSTATE
-    );
-    console.log("✅ appstate.json loaded from ENV");
-  } catch (e) {
-    console.error("❌ Failed to write appstate.json:", e);
-  }
-}
-
-// appstate load
-let appState;
-try {
-  appState = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "appstate.json"), "utf8")
+  fs.writeFileSync(
+    path.join(__dirname, "appstate.json"),
+    process.env.FB_APPSTATE
   );
-} catch (err) {
-  console.error("❌ appstate.json read error");
-  process.exit(1);
 }
 
-// Facebook login
-login(
-  { appState },
-  {
-    logLevel: "silent",
-    forceLogin: true,
-    selfListen: false,
+const appState = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "appstate.json"), "utf8")
+);
+
+login({ appState }, (err, api) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  console.log("✅ Bot logged in");
+
+  api.setOptions({
+    listenEvents: true,
+    selfListen: false
+  });
+
+  require("./includes/listen")(api);
+});    selfListen: false,
     listenEvents: true
   },
   (err, api) => {
