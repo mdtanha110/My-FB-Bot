@@ -2,7 +2,10 @@
   "name": "my-fb-bot",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "facebook-chat-api": "^1.8.0"
+    "facebook-chat-api": "^1.7.3"
   }
 }
